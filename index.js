@@ -58,6 +58,18 @@ async function run() {
 }
 run().catch(console.dir);
 
+// new database for ass 11 hotel management start////
+
+const roomCollection = client.db("hotelUser").collection("rooms");
+app.get('/rooms', async(req, res) =>{
+  const cursor = roomCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+
+// new database for ass 11 hotel management end////
+
 
 const productCollection = client.db("productsDB").collection("product");
 
