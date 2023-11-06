@@ -87,6 +87,27 @@ app.post('/bookings', async (req, res) => {
 
 });
 
+// testing myself
+app.put('/rooms/:id', async(req, res) => {
+  const id = req.params.id;
+  const filter = {_id: new ObjectId(id)}
+  const options = { upsert: true};
+
+  const updatedProduct = req.body;
+  const currentRoom = updatedProduct.currentRoom;
+  console.log(currentRoom);
+  console.log("mycheck:", id, filter);
+  const product = {
+      $set: {
+        availability: currentRoom, 
+        
+      }
+  }
+    const result = await roomCollection.updateOne(filter, product, options)
+    res.send(result);
+})
+
+///////////////////////////////
 
 
 // new database for ass 11 hotel management end////
@@ -123,6 +144,8 @@ app.put('/product/:id', async(req, res) => {
   const options = { upsert: true};
 
   const updatedProduct = req.body;
+  console.log(updatedProduct);
+  console.log(updatedProduct.name);
   const product = {
       $set: {
         name: updatedProduct.name, 
