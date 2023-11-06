@@ -60,12 +60,33 @@ run().catch(console.dir);
 
 // new database for ass 11 hotel management start////
 
-const roomCollection = client.db("hotelUser").collection("rooms");
+const roomCollection = client.db('hotelUser').collection('rooms');
+const bookingCollection = client.db('hotelUser').collection('bookings');
+
 app.get('/rooms', async(req, res) =>{
   const cursor = roomCollection.find();
   const result = await cursor.toArray();
   res.send(result);
 })
+
+app.get('/rooms/:id', async(req, res) =>{
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)}
+
+  const result = await roomCollection.findOne(query);
+  res.send(result);
+})
+
+
+// bookings
+app.post('/bookings', async (req, res) => {
+  const booking = req.body;
+  console.log(booking);
+  const result = await bookingCollection.insertOne(booking);
+  res.send(result);
+
+});
+
 
 
 // new database for ass 11 hotel management end////
