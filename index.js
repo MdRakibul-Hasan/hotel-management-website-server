@@ -158,14 +158,42 @@ const updated = {
     checkInDate: updatedBookingInfo.checkInDate,
     checkOutDate: updatedBookingInfo.checkOutDate,
     orderStatus: updatedBookingInfo.orderStatus,
-
-    
   }
 }
-
   const result = await bookingCollection.updateOne(filter, updated, options);
   res.send(result);
 })
+
+// add new review
+
+app.post('/rooms/:id', async (req, res) => {
+  const { id } = req.params;
+  const { username, rating, comment } = req.body;
+  const timestamp = new Date();
+console.log(req.body);
+console.log(id);
+  try {
+    const filter = {_id: new ObjectId(id)}
+    const options = { upsert: true};
+    // const filter = { _id: id };
+    const update = {
+      $push: {
+        reviews: {
+          name: username,
+          comment: comment,
+          rating: rating,
+          timestamp: timestamp
+        }
+      }
+    };
+
+    const result = await roomCollection.updateOne(filter, update, options);
+    res.send(result);
+  } catch (error) {
+    console.error("Error adding review:", error);
+    res.status(500).send("Server error");
+  }
+});
 
 
 
