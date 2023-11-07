@@ -131,6 +131,7 @@ app.get('/bookings', async(req, res) =>{
 
 // })
 
+// getting booking data by id for update page
 app.get('/bookings/:id', async(req, res) =>{
   const id = req.params.id;
   const query = {_id: new ObjectId(id)}
@@ -139,8 +140,32 @@ app.get('/bookings/:id', async(req, res) =>{
   res.send(result);
 })
 
+// send update information to the data base
+app.put('/bookings/:id', async(req, res) =>{
+  const id = req.params.id;
+  const filter = {_id: new ObjectId(id)}
+  const options = { upsert: true};
 
+  const updatedBookingInfo = req.body;
+  console.log(updatedBookingInfo);
+const updated = {
+  $set: {
+    customerName: updatedBookingInfo.customerName,
+    email: updatedBookingInfo.email,
+    phone: updatedBookingInfo.phone,
+    roomName: updatedBookingInfo.roomName,
+    price: updatedBookingInfo.price,
+    checkInDate: updatedBookingInfo.checkInDate,
+    checkOutDate: updatedBookingInfo.checkOutDate,
+    orderStatus: updatedBookingInfo.orderStatus,
 
+    
+  }
+}
+
+  const result = await bookingCollection.updateOne(filter, updated, options);
+  res.send(result);
+})
 
 
 
