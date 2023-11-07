@@ -87,7 +87,7 @@ app.post('/bookings', async (req, res) => {
 
 });
 
-// testing myself
+//  update availablity
 app.put('/rooms/:id', async(req, res) => {
   const id = req.params.id;
   const filter = {_id: new ObjectId(id)}
@@ -95,8 +95,6 @@ app.put('/rooms/:id', async(req, res) => {
 
   const updatedProduct = req.body;
   const currentRoom = updatedProduct.currentRoom;
-  console.log(currentRoom);
-  console.log("mycheck:", id, filter);
   const product = {
       $set: {
         availability: currentRoom, 
@@ -107,7 +105,54 @@ app.put('/rooms/:id', async(req, res) => {
     res.send(result);
 })
 
-///////////////////////////////
+// specific booking by email 
+app.get('/bookings', async(req, res) =>{
+  console.log(req.query.email);
+  let query = {};
+  if(req.query?.email){
+    query = {email: req.query.email}
+  }
+  const result = await bookingCollection.find(query).toArray();
+  res.send(result);
+})
+
+// update a booking
+// app.patch('/bookings/:id', async(req, res) => {
+//   const id = req.params.id;
+//   const filter = {_id: new ObjectId(id)};
+//   const updatedBooking = req.body;
+//  console.log(updatedBooking);
+
+// const updateDoc = {
+//   $set: {
+//     status: updatedBooking.status
+//   }
+// }
+
+// })
+
+app.get('/bookings/:id', async(req, res) =>{
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)}
+
+  const result = await bookingCollection.findOne(query);
+  res.send(result);
+})
+
+
+
+
+
+
+// delete my bookings room
+
+app.delete('/bookings/:id', async(req, res) =>{
+  const id = req.params.id;
+  const query = {_id: new ObjectId(id)}
+  const result = await bookingCollection.deleteOne(query);
+  res.send(result);
+})
+
 
 
 // new database for ass 11 hotel management end////
