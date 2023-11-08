@@ -183,20 +183,7 @@ app.get('/bookings', logger, verifyToken, async(req, res) =>{
   res.send(result);
 })
 
-// update a booking
-// app.patch('/bookings/:id', async(req, res) => {
-//   const id = req.params.id;
-//   const filter = {_id: new ObjectId(id)};
-//   const updatedBooking = req.body;
-//  console.log(updatedBooking);
 
-// const updateDoc = {
-//   $set: {
-//     status: updatedBooking.status
-//   }
-// }
-
-// })
 
 // getting booking data by id for update page
 app.get('/bookings/:id', async(req, res) =>{
@@ -277,54 +264,6 @@ app.delete('/bookings/:id', async(req, res) =>{
 
 // new database for ass 11 hotel management end////
 
-
-const productCollection = client.db("productsDB").collection("product");
-
-    
-    app.get('/product', async(req, res) =>{
-      const cursor = productCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    })
-
-app.get('/product/:id', async(req, res) =>{
-  const id = req.params.id;
-  const query = {_id: new ObjectId(id)}
-  const result = await productCollection.findOne(query);
-  res.send(result);
-})
-
-
-
-    app.post('/product', async(req, res) =>{
-      const newProduct = req.body;
-      console.log(newProduct);
-      const result = await productCollection.insertOne(newProduct);
-      res.send(result);
-    })
-
-app.put('/product/:id', async(req, res) => {
-  const id = req.params.id;
-  const filter = {_id: new ObjectId(id)}
-  const options = { upsert: true};
-
-  const updatedProduct = req.body;
-  console.log(updatedProduct);
-  console.log(updatedProduct.name);
-  const product = {
-      $set: {
-        name: updatedProduct.name, 
-        brand: updatedProduct.brand, 
-        price: updatedProduct.price,
-        rating: updatedProduct.rating, 
-        option: updatedProduct.option,
-        description: updatedProduct.description, 
-        image: updatedProduct.image
-      }
-  }
-    const result = await productCollection.updateOne(filter, product, options)
-    res.send(result);
-})
 
 
 app.get('/', (req, res) =>{
