@@ -9,7 +9,10 @@ const port = process.env.PORT || 5000;
 
 //aita middleware er jonne
 app.use(cors({
-  origin: ['http://localhost:5173'], 
+  origin: ['http://localhost:5173',
+'https://simple-firebase-practice-18c86.web.app',
+'https://simple-firebase-practice-18c86.firebaseapp.com'
+], 
   credentials: true
 }));
 
